@@ -9,6 +9,14 @@
     "prettier": "npx prettier -w .",
     "tsc": "npx tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaterIdiot/docdb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LaterIdiot/docdb/issues"
+  },
+  "homepage": "https://github.com/LaterIdiot/docdb#readme",
   "author": "LaterIdiot",
   "license": "MIT",
   "dependencies": {},
