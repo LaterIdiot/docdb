@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "CommonJS",
+    "watch": true,
+    "lib": ["ES2018", "ES6"],
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "alwaysStrict": true
+  },
+  "include": ["src", "src/config.ts"],
+  "compileOnSave": true
+}
