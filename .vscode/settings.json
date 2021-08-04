@@ -9,6 +9,11 @@
     "editor.autoClosingDelete": "always",
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[javascript]": {
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingDelete": "always",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "files.eol": "\n",
   "prettier.singleQuote": true,
   "prettier.printWidth": 120,
@@ -16,5 +21,6 @@
   "prettier.endOfLine": "lf",
   "prettier.arrowParens": "avoid",
   "prettier.tabWidth": 2,
-  "prettier.bracketSpacing": true
+  "prettier.bracketSpacing": true,
+  "editor.autoClosingQuotes": "always"
 }
