@@ -39,14 +39,14 @@ export class Db {
    * @type {RegExp}
    * @static
    */
-  static DB_NAME_PATTERN = /^[^\/\\. "$*<>:|?]{1,63}$/;
+  static DB_NAME_PATTERN: RegExp = /^[^\/\\. "$*<>:|?]{1,63}$/;
 
   /**
    * Invalid database name characters in a string
    * @type {string}
    * @static
    */
-  static DB_NAME_INVALID_CHARS = '/\\. "$*<>:|?';
+  static DB_NAME_INVALID_CHARS: string = '/\\. "$*<>:|?';
 
   /**
    * Database name

@@ -1,8 +1,19 @@
-import { writeFile, writeFileSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import { join } from 'path';
 import { ObjectId } from '../structures/ObjectId.js';
 import { Db } from './Db.js';
+
+// TODO: put JSON types somewhere else and may need reevaluation
+type JSONArray = Array<string | number | JSONObject | JSONArray | boolean | null>;
+
+class JSONObject {
+  [key: string]: string | number | JSONObject | JSONArray | boolean | null;
+}
+
+interface UnkownObject {
+  [key: string]: any;
+}
 
 export class Collection {
   constructor(db: Db, collectionName: string) {
@@ -25,6 +36,27 @@ export class Collection {
      * @type {string}
      */
     this.collectionPath = collectionPath;
+
+    const documentsPath = join(collectionPath, 'documents');
+    const indexesPath = join(collectionPath, 'indexes');
+
+    // ensures documentsPath is a directory
+    mkdirp.sync(documentsPath);
+
+    // ensures indexesPath is a directory
+    mkdirp.sync(indexesPath);
+
+    /**
+     * Documents path
+     * @type {string}
+     */
+    this.documentsPath = documentsPath;
+
+    /**
+     * Indexes path
+     * @type {string}
+     */
+    this.indexesPath = indexesPath;
   }
 
   /**
@@ -32,14 +64,14 @@ export class Collection {
    * @type {RegExp}
    * @static
    */
-  static COLLECTION_NAME_PATTERN = /^[^\/\\. "$*<>:|?]{1,255}$/;
+  static COLLECTION_NAME_PATTERN: RegExp = /^[^\/\\. "$*<>:|?]{1,255}$/;
 
   /**
    * Invalid collection name characters in a string
    * @type {string}
    * @static
    */
-  static COLLECTION_NAME_INVALID_CHARS = '/\\. "$*<>:|?';
+  static COLLECTION_NAME_INVALID_CHARS: string = '/\\. "$*<>:|?';
 
   /**
    * Collection name
@@ -53,7 +85,25 @@ export class Collection {
    */
   public collectionPath: string;
 
-  public async insertOne(document: object & { _id?: string }) {
+  /**
+   * Documents path
+   * @type {string}
+   */
+  public documentsPath: string;
+
+  /**
+   * Indexes path
+   * @type {string}
+   */
+  public indexesPath: string;
+
+  // TODO: parameter types for this method needs to be reevaluated
+  /**
+   * Inserts document to a collection.
+   * @param {JSONObject} document - document to insert as object
+   * @returns {Promise<void>}
+   */
+  public async insertOne(document: JSONObject & { _id?: string }): Promise<void> {
     if (document._id) {
       ObjectId.validateId(document._id);
     }
@@ -63,9 +113,54 @@ export class Collection {
     return writeFileSync(`${join(this.collectionPath, verifiedDocument._id + '.json')}`, jsonDocument);
   }
 
-  public async insertMany(documentArr: (object & { _id?: string })[]) {
+  // TODO: parameter types for this method needs to be reevaluated
+  /**
+   * Inserts multiple documents to a collection.
+   * @param {JSONObject[]} document - Documents to insert as object array
+   * @returns {Promise<void>}
+   */
+  public async insertMany(documentArr: (JSONObject & { _id?: string })[]): Promise<void> {
     for await (const document of documentArr) {
       this.insertOne(document);
+    }
+  }
+
+  // TODO: parameter types for this method needs to be reevaluated
+  // TODO: create JSDOC for this method
+  private satisfiesQuery(query: JSONObject, document: JSONObject): boolean {
+    const queryPropArr = Object.keys(query);
+
+    for (const queryProp of queryPropArr) {
+      if (queryProp in document) {
+        if (typeof query[queryProp] === typeof document[queryProp]) {
+          if (query[queryProp] === document[queryProp]) continue;
+          else if (query[queryProp] instanceof Array && document[queryProp] instanceof Array) {
+            query = { ...(query[queryProp] as object) };
+            document = { ...(document[queryProp] as object) };
+            if (!this.satisfiesQuery(query, document)) return false;
+          } else if (query[queryProp] instanceof Object && document[queryProp] instanceof Object) {
+            if (!this.satisfiesQuery(query, document)) return false;
+          } else return false;
+        }
+      } else return false;
+    }
+
+    return true;
+  }
+
+  // TODO: parameter types for this method needs to be reevaluated
+  // TODO: create JSDOC for this method
+  public async findOne(query: JSONObject): Promise<void | JSONObject> {
+    if (!(query instanceof Object)) {
+      throw new TypeError('Argument of query must be a Object');
+    }
+
+    query = JSON.parse(JSON.stringify(query));
+    const documentFileNameArr = readdirSync(this.collectionPath).filter(filename => filename.endsWith('.json'));
+
+    for await (const documentFileName of documentFileNameArr) {
+      const document: JSONObject = JSON.parse(readFileSync(join(this.collectionPath, documentFileName)).toString());
+      if (this.satisfiesQuery(query, document)) return document;
     }
   }
 

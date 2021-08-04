@@ -36,7 +36,7 @@ export class ObjectId {
    * @type {RegExp}
    * @static
    */
-  static OBJECTID_PATTERN = /^(\d|[a-f]){24}$/;
+  static OBJECTID_PATTERN: RegExp = /^(\d|[a-f]){24}$/;
 
   /**
    * Object Id as buffer
