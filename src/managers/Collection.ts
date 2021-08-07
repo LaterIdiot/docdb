@@ -1,19 +1,10 @@
-import { readdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import mkdirp from 'mkdirp';
 import { join } from 'path';
 import { ObjectId } from '../structures/ObjectId.js';
 import { Db } from './Db.js';
-
-// TODO: put JSON types somewhere else and may need reevaluation
-type JSONArray = Array<string | number | JSONObject | JSONArray | boolean | null>;
-
-class JSONObject {
-  [key: string]: string | number | JSONObject | JSONArray | boolean | null;
-}
-
-interface UnkownObject {
-  [key: string]: any;
-}
+import { JSONObject, IndexSpecification, IndexesObject, IndexedDocumentsObject } from '../tools/types';
+import { isObject, deepEqual } from '../tools/functions.js';
 
 export class Collection {
   constructor(db: Db, collectionName: string) {
@@ -57,6 +48,15 @@ export class Collection {
      * @type {string}
      */
     this.indexesPath = indexesPath;
+
+    const indexesJsonPath = join(indexesPath, 'indexes.json');
+
+    if (!existsSync(indexesJsonPath)) {
+      const indexesDefaultJson = JSON.stringify({ indexes: [] } as IndexesObject, null, 2);
+      writeFileSync(indexesJsonPath, indexesDefaultJson);
+    }
+
+    this.indexesJsonPath = indexesJsonPath;
   }
 
   /**
@@ -97,6 +97,8 @@ export class Collection {
    */
   public indexesPath: string;
 
+  public indexesJsonPath: string;
+
   // TODO: parameter types for this method needs to be reevaluated
   /**
    * Inserts document to a collection.
@@ -131,18 +133,12 @@ export class Collection {
     const queryPropArr = Object.keys(query);
 
     for (const queryProp of queryPropArr) {
-      if (queryProp in document) {
-        if (typeof query[queryProp] === typeof document[queryProp]) {
-          if (query[queryProp] === document[queryProp]) continue;
-          else if (query[queryProp] instanceof Array && document[queryProp] instanceof Array) {
-            query = { ...(query[queryProp] as object) };
-            document = { ...(document[queryProp] as object) };
-            if (!this.satisfiesQuery(query, document)) return false;
-          } else if (query[queryProp] instanceof Object && document[queryProp] instanceof Object) {
-            if (!this.satisfiesQuery(query, document)) return false;
-          } else return false;
-        }
-      } else return false;
+      const val1 = query[queryProp];
+      const val2 = document[queryProp];
+      const areObjects = isObject(val1 as JSONObject) && isObject(val2 as JSONObject);
+      if ((areObjects && !deepEqual(val1 as JSONObject, val2 as JSONObject)) || (!areObjects && val1 !== val2)) {
+        return false;
+      }
     }
 
     return true;
@@ -156,11 +152,49 @@ export class Collection {
     }
 
     query = JSON.parse(JSON.stringify(query));
-    const documentFileNameArr = readdirSync(this.collectionPath).filter(filename => filename.endsWith('.json'));
+    const documentFileNameArr = readdirSync(this.documentsPath).filter(filename => filename.endsWith('.json'));
 
     for await (const documentFileName of documentFileNameArr) {
-      const document: JSONObject = JSON.parse(readFileSync(join(this.collectionPath, documentFileName)).toString());
+      const document: JSONObject = JSON.parse(readFileSync(join(this.documentsPath, documentFileName)).toString());
       if (this.satisfiesQuery(query, document)) return document;
+    }
+  }
+
+  // TODO: parameter types for this method needs to be reevaluated
+  // TODO: create JSDOC for this method
+  public async find(query: JSONObject): Promise<JSONObject[]> {
+    if (!(query instanceof Object)) {
+      throw new TypeError('Argument of query must be a Object');
+    }
+
+    query = JSON.parse(JSON.stringify(query));
+    const documentFileNameArr = readdirSync(this.documentsPath).filter(filename => filename.endsWith('.json'));
+
+    const filteredDocumentArr = [];
+
+    for await (const documentFileName of documentFileNameArr) {
+      const document: JSONObject = JSON.parse(readFileSync(join(this.documentsPath, documentFileName)).toString());
+      if (this.satisfiesQuery(query, document)) filteredDocumentArr.push(document);
+    }
+
+    return filteredDocumentArr;
+  }
+
+  public async createIndex(indexSpec: IndexSpecification): Promise<void> {
+    const indexesObj: IndexesObject = JSON.parse(readFileSync(this.indexesJsonPath).toString());
+    const indexArr = indexesObj.indexes;
+    const indexObj = { indexSpecification: indexSpec, jsonFileName: `index-${indexArr.length}.json` };
+
+    indexArr.push(indexObj);
+    indexesObj.indexes = indexArr;
+
+    writeFileSync(this.indexesJsonPath, JSON.stringify(indexesObj));
+
+    const indexJsonPath = join(this.indexesPath, indexObj.jsonFileName);
+
+    if (!existsSync(indexJsonPath)) {
+      const indexDefaultJson = JSON.stringify({ indexedDocuments: [] } as IndexedDocumentsObject, null, 2);
+      writeFileSync(indexJsonPath, indexDefaultJson);
     }
   }
 

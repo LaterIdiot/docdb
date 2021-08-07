@@ -20,8 +20,4 @@ data = {
 
 const collection = new DocClient('private/data').db('database').collection('collection');
 
-collection
-  .findOne({
-    minecraftUUID: '927438989759847',
-  })
-  .then(console.log);
+collection.find({ muteActive: true }).then(console.log);
