@@ -1,24 +1,24 @@
 export interface UnknownObject {
-    [key: string]: any;
+  [key: string]: any;
 }
 export declare type JSONArray = Array<string | number | JSONObject | JSONArray | boolean | null>;
 export interface JSONObject {
-    [key: string]: string | number | JSONObject | JSONArray | boolean | null;
+  [key: string]: string | number | JSONObject | JSONArray | boolean | null;
 }
 export interface IndexSpecification {
-    [key: string]: 0;
+  [key: string]: 0;
 }
 export interface IndexObject extends JSONObject {
-    indexSpecification: IndexSpecification;
-    jsonFileName: string;
+  indexSpecification: IndexSpecification;
+  jsonFileName: string;
 }
 export interface IndexesObject extends JSONObject {
-    indexes: IndexObject[];
+  indexes: IndexObject[];
 }
 export interface IndexedDocumentObject extends JSONObject {
-    indexQuery: JSONObject;
-    _id: string;
+  indexQuery: JSONObject;
+  _id: string;
 }
 export interface IndexedDocumentsObject extends JSONObject {
-    indexedDocuments: IndexedDocumentObject[];
+  indexedDocuments: IndexedDocumentObject[];
 }
