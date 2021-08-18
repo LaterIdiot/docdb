@@ -5,6 +5,7 @@ import { Collection } from './Collection.js';
  * Represents a DocDB database
  */
 export declare class Db {
+<<<<<<< HEAD:types/src/managers/Db.d.ts
     /**
      * Constructs an instance of Db.
      * @param {DocClient} docClient Instance of DocClient
@@ -55,4 +56,56 @@ export declare class Db {
      * @private
      */
     static validateDbName(dbName: string): void;
+=======
+  /**
+   * Constructs an instance of Db
+   * @param {DocClient} docClient - Instance of DocClient
+   * @param {string} dbName - Valid db name
+   */
+  constructor(docClient: DocClient, dbName: string);
+  /**
+   * Database name pattern
+   * @type {RegExp}
+   * @static
+   */
+  static DB_NAME_PATTERN: RegExp;
+  /**
+   * Invalid database name characters in a string
+   * @type {string}
+   * @static
+   */
+  static DB_NAME_INVALID_CHARS: string;
+  /**
+   * Database name
+   * @type {string}
+   */
+  dbName: string;
+  /**
+   * Database path
+   * @type {string}
+   */
+  dbPath: string;
+  /**
+   * Access a collection if it does not exist it will create one
+   * @param {string} collectionName - A valid collection name
+   * @returns {Collection}
+   */
+  collection(collectionName: string): Collection;
+  /**
+   * Validates argument of docClient,
+   * @param {DocClient} docClient - Instance of DocClient
+   * @returns {void}
+   * @throws {TypeError} Will throw an error if docClient is not an instance of DocClient.
+   * @private
+   */
+  static validateDocClient(docClient: DocClient): void;
+  /**
+   * Validates argument of dbName.
+   * @param {string} dbName - Valid database name
+   * @returns {void}
+   * @throws {TypeError} Will throw an error if dbName is not a valid database name.
+   * @private
+   */
+  static validateDbName(dbName: string): void;
+>>>>>>> a4ae36663598168dfb21c8cf231a41d2f1cd74ac:types/managers/Db.d.ts
 }
