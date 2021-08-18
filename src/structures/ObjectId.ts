@@ -18,7 +18,7 @@ export class ObjectId {
   }
 
   /**
-   * ObjectId index
+   * ObjectId's index
    * @type {number}
    * @static
    */
@@ -32,14 +32,14 @@ export class ObjectId {
   static processRandom5Bytes: Uint8Array = randomBytes(5);
 
   /**
-   * Object Id pattern
+   * ObjectId string pattern
    * @type {RegExp}
    * @static
    */
   static OBJECTID_PATTERN: RegExp = /^(\d|[a-f]){24}$/;
 
   /**
-   * Object Id as buffer
+   * ObjectId as buffer
    * @type {Buffer}
    * @private
    */
@@ -66,7 +66,7 @@ export class ObjectId {
   }
 
   /**
-   * The string representation of the ObjectId. This string value has the format of ObjectId(...)
+   * The string representation of the ObjectId. This string value has the format of ObjectId(...).
    * @returns {string}
    */
   public toString(): string {
@@ -83,19 +83,19 @@ export class ObjectId {
 
   /**
    * Returns the id if it's valid otherwise it throws an error.
-   * @param {string} id - Hexadecimal string of ObjectId class
+   * @param {string} id Hexadecimal string of ObjectId class
    * @returns {void}
    * @throws {TypeError} Throws an error if id is not a valid Object Id.
    * @private
    */
-  static validateId(id: string): void {
+  static validateId(id: unknown): void {
     if (typeof id !== 'string') throw new TypeError('Object id must be a string');
     if (id.length !== 24) throw new TypeError('Object id must be exactly 24 characters long hexadecimal string');
     if (!ObjectId.OBJECTID_PATTERN.test(id)) throw new TypeError('Object id must be a hexadecimal string');
   }
 
   /**
-   * Increments ObjectId index
+   * Increments ObjectId's index.
    * @returns {number}
    * @private
    */
@@ -104,7 +104,7 @@ export class ObjectId {
   }
 
   /**
-   * Generate a 12 byte unique ObjectId
+   * Generates a 12 byte unique ObjectId as buffer.
    * @returns {Buffer}
    * @private
    */

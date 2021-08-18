@@ -17,6 +17,6 @@
     "declaration": true,
     "declarationDir": "types"
   },
-  "include": ["src"],
+  "include": ["src", "tests"],
   "compileOnSave": true
 }

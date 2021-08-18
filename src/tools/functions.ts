@@ -1,7 +1,12 @@
-import { UnknownObject } from './types';
+import { JSONObject, UnknownObject } from './types';
 
-export function isObject(object: UnknownObject): boolean {
+export function isObject(object: unknown): boolean {
   return object != null && typeof object === 'object';
+}
+
+export function isObjectOnly(object: unknown): boolean {
+  const objectJsonStr = JSON.stringify(object);
+  return isObject(object) && objectJsonStr.startsWith('{') && objectJsonStr.endsWith('}');
 }
 
 export function deepEqual(object1: UnknownObject, object2: UnknownObject): boolean {

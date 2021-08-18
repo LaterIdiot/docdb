@@ -5,7 +5,7 @@ import { Db } from '../managers/Db.js';
 export declare class DocClient {
     /**
      * Creates a client for DocDB and initialises a folder.
-     * @param {string} basePath - The basepath for DocClient to store data in
+     * @param {string} basePath The basepath for DocClient to store data in
      */
     constructor(basePath: string);
     /**
@@ -14,8 +14,8 @@ export declare class DocClient {
      */
     basePath: string;
     /**
-     * Access a database if it does not exist it will create one
-     * @param {string} dbName - A valid database name
+     * Access a database, if it does not exist it will create one.
+     * @param {string} dbName A valid database name
      * @returns {Db}
      */
     db(dbName: string): Db;

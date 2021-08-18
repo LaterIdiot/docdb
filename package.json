@@ -1,13 +1,20 @@
 {
   "name": "docdb",
-  "version": "1.0.0",
+  "version": "0.10.0",
   "description": "A database that is a subset of MongoDB and has the ability to store data (documents) in json file format, so that your stored data is easily viewable in a filesystem.",
-  "main": "/dist/index.js",
+  "main": "/dist/src/index.js",
   "type": "module",
   "types": "./types/index.d.ts",
+  "exports": {
+    ".": "./dist/src/index.js"
+  },
+  "files": [
+    "src",
+    "types"
+  ],
   "scripts": {
     "setup": "npm i && npx tsc",
-    "test": "node ./tests/index.js",
+    "test": "node ./dist/tests/index.js",
     "prettier": "npx prettier -w .",
     "tsc": "npx tsc"
   },
@@ -22,10 +29,10 @@
   "author": "LaterIdiot",
   "license": "MIT",
   "dependencies": {
-    "mkdirp": "^1.0.4"
+    "fs-extra": "^10.0.0"
   },
   "devDependencies": {
-    "@types/mkdirp": "^1.0.2",
+    "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.4.7",
     "prettier": "^2.3.2",
     "typescript": "^4.3.5"

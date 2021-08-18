@@ -1,16 +1,24 @@
-export interface UnknownObject {
+export interface UnknownObject extends Object {
   [key: string]: any;
 }
 
-// TODO: put JSON types somewhere else and may need reevaluation
+export interface ProjectionObject extends Document {
+  [key: string]: 0 | 1 | ProjectionObject;
+}
+
+// For creating other types
 export type JSONArray = Array<string | number | JSONObject | JSONArray | boolean | null>;
 
 export interface JSONObject {
   [key: string]: string | number | JSONObject | JSONArray | boolean | null;
 }
 
+export interface Document extends JSONObject {}
+
+export type Query<D extends Document> = Partial<D>;
+
 export interface IndexSpecification {
-  [key: string]: 0;
+  [key: string]: 0 | IndexSpecification;
 }
 
 export interface IndexObject extends JSONObject {
@@ -23,10 +31,14 @@ export interface IndexesObject extends JSONObject {
 }
 
 export interface IndexedDocumentObject extends JSONObject {
-  indexQuery: JSONObject;
+  indexedDocument: JSONObject;
   _id: string;
 }
 
 export interface IndexedDocumentsObject extends JSONObject {
+  indexSpecification: IndexSpecification;
+  indexProjection: ProjectionObject;
   indexedDocuments: IndexedDocumentObject[];
 }
+
+export type Projection<T extends Document> = { [Key in keyof T]?: 0 | 1 };

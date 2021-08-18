@@ -6,7 +6,7 @@ export declare class ObjectId {
      */
     constructor(id?: string);
     /**
-     * ObjectId index
+     * ObjectId's index
      * @type {number}
      * @static
      */
@@ -18,13 +18,13 @@ export declare class ObjectId {
      */
     static processRandom5Bytes: Uint8Array;
     /**
-     * Object Id pattern
+     * ObjectId string pattern
      * @type {RegExp}
      * @static
      */
     static OBJECTID_PATTERN: RegExp;
     /**
-     * Object Id as buffer
+     * ObjectId as buffer
      * @type {Buffer}
      * @private
      */
@@ -41,7 +41,7 @@ export declare class ObjectId {
      */
     getTimestamp(): Date;
     /**
-     * The string representation of the ObjectId. This string value has the format of ObjectId(...)
+     * The string representation of the ObjectId. This string value has the format of ObjectId(...).
      * @returns {string}
      */
     toString(): string;
@@ -52,20 +52,20 @@ export declare class ObjectId {
     valueOf(): string;
     /**
      * Returns the id if it's valid otherwise it throws an error.
-     * @param {string} id - Hexadecimal string of ObjectId class
+     * @param {string} id Hexadecimal string of ObjectId class
      * @returns {void}
      * @throws {TypeError} Throws an error if id is not a valid Object Id.
      * @private
      */
-    static validateId(id: string): void;
+    static validateId(id: unknown): void;
     /**
-     * Increments ObjectId index
+     * Increments ObjectId's index.
      * @returns {number}
      * @private
      */
     private incrementIndex;
     /**
-     * Generate a 12 byte unique ObjectId
+     * Generates a 12 byte unique ObjectId as buffer.
      * @returns {Buffer}
      * @private
      */

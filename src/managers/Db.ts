@@ -1,6 +1,7 @@
-import mkdirp from 'mkdirp';
+import { ensureDirSync } from 'fs-extra';
 import { join } from 'path';
 import { DocClient } from '../client/DocClient.js';
+import { Document } from '../tools/types.js';
 import { Collection } from './Collection.js';
 
 /**
@@ -8,9 +9,9 @@ import { Collection } from './Collection.js';
  */
 export class Db {
   /**
-   * Constructs an instance of Db
-   * @param {DocClient} docClient - Instance of DocClient
-   * @param {string} dbName - Valid db name
+   * Constructs an instance of Db.
+   * @param {DocClient} docClient Instance of DocClient
+   * @param {string} dbName Valid db name
    */
   constructor(docClient: DocClient, dbName: string) {
     Db.validateDocClient(docClient);
@@ -19,7 +20,7 @@ export class Db {
     const dbPath = join(docClient.basePath, dbName);
 
     // ensures dbPath is a directory
-    mkdirp.sync(dbPath);
+    ensureDirSync(dbPath);
 
     /**
      * Database name
@@ -61,17 +62,17 @@ export class Db {
   public dbPath: string;
 
   /**
-   * Access a collection if it does not exist it will create one
-   * @param {string} collectionName - A valid collection name
+   * Access a collection if it does not exist then it will create one.
+   * @param {string} collectionName A valid collection name
    * @returns {Collection}
    */
-  public collection(collectionName: string): Collection {
-    return new Collection(this, collectionName);
+  public collection<DocumentSchema extends Document = Document>(collectionName: string): Collection {
+    return new Collection<DocumentSchema>(this, collectionName);
   }
 
   /**
-   * Validates argument of docClient,
-   * @param {DocClient} docClient - Instance of DocClient
+   * Validates argument of docClient.
+   * @param {DocClient} docClient Instance of DocClient
    * @returns {void}
    * @throws {TypeError} Will throw an error if docClient is not an instance of DocClient.
    * @private
@@ -84,7 +85,7 @@ export class Db {
 
   /**
    * Validates argument of dbName.
-   * @param {string} dbName - Valid database name
+   * @param {string} dbName Valid database name
    * @returns {void}
    * @throws {TypeError} Will throw an error if dbName is not a valid database name.
    * @private
