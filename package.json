@@ -12,16 +12,18 @@
     "setup": "npm i && npx tsc",
     "test": "node ./dist/tests/index.js",
     "prettier": "npx prettier -w .",
-    "tsc": "npx tsc"
+    "tsc": "npx tsc",
+    "prepare": "npx husky install",
+    "git-hook:pre-commit": "npm run prettier && git add -A ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LaterIdiot/docdb.git"
+    "url": "git+https://github.com/LaterIdiot/oreodb.git"
   },
   "bugs": {
-    "url": "https://github.com/LaterIdiot/docdb/issues"
+    "url": "https://github.com/LaterIdiot/oreodb/issues"
   },
-  "homepage": "https://github.com/LaterIdiot/docdb#readme",
+  "homepage": "https://github.com/LaterIdiot/oreodb#readme",
   "author": "LaterIdiot",
   "license": "MIT",
   "dependencies": {
@@ -30,6 +32,7 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.4.7",
+    "husky": "^7.0.1",
     "prettier": "^2.3.2",
     "typescript": "^4.3.5"
   }

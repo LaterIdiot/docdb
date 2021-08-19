@@ -1,23 +1,23 @@
 import { ensureDirSync } from 'fs-extra';
 import { join } from 'path';
-import { DocClient } from '../client/DocClient.js';
+import { OreoClient } from '../client/OreoClient.js';
 import { Document } from '../tools/types.js';
 import { Collection } from './Collection.js';
 
 /**
- * Represents a DocDB database
+ * Represents a OreoDB database
  */
 export class Db {
   /**
    * Constructs an instance of Db.
-   * @param {DocClient} docClient Instance of DocClient
+   * @param {OreoClient} oreoClient Instance of OreoClient
    * @param {string} dbName Valid db name
    */
-  constructor(docClient: DocClient, dbName: string) {
-    Db.validateDocClient(docClient);
+  constructor(oreoClient: OreoClient, dbName: string) {
+    Db.validateOreoClient(oreoClient);
     Db.validateDbName(dbName);
 
-    const dbPath = join(docClient.basePath, dbName);
+    const dbPath = join(oreoClient.basePath, dbName);
 
     // ensures dbPath is a directory
     ensureDirSync(dbPath);
@@ -71,16 +71,16 @@ export class Db {
   }
 
   /**
-   * Validates argument of docClient.
-   * @param {DocClient} docClient Instance of DocClient
+   * Validates argument of oreoClient.
+   * @param {DocClient} oreoClient Instance of OreoClient
    * @returns {void}
-   * @throws {TypeError} Will throw an error if docClient is not an instance of DocClient.
+   * @throws {TypeError} Will throw an error if oreoClient is not an instance of OreoClient.
    * @private
    */
-  static validateDocClient(docClient: DocClient): void {
-    if (typeof docClient !== 'object') throw new TypeError('Argument of docClient must be an object');
-    if (!(docClient instanceof DocClient))
-      throw new TypeError('Argument of docClient must be an instance of DocClient');
+  static validateOreoClient(oreoClient: OreoClient): void {
+    if (typeof oreoClient !== 'object') throw new TypeError('Argument of oreoClient must be an object');
+    if (!(oreoClient instanceof OreoClient))
+      throw new TypeError('Argument of oreoClient must be an instance of OreoClient');
   }
 
   /**

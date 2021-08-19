@@ -1,7 +1,7 @@
-import { Collection, DocClient, Document, JSONObject } from '../src/index.js';
+import { Collection, OreoClient, Document, JSONObject } from '../src/index.js';
 
-// const docClient = new DocClient('private/data');
-// const collection = docClient.db('database').collection('col');
+// const oreoClient = new DocClient('private/data');
+// const collection = oreoClient.db('database').collection('col');
 
 // class Person implements Document {
 //   constructor(name: string, age: number, sex: 'male' | 'female', last?: string, student = false) {

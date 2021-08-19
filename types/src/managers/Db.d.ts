@@ -1,16 +1,16 @@
-import { DocClient } from '../client/DocClient.js';
+import { OreoClient } from '../client/OreoClient.js';
 import { Document } from '../tools/types.js';
 import { Collection } from './Collection.js';
 /**
- * Represents a DocDB database
+ * Represents a OreoDB database
  */
 export declare class Db {
   /**
    * Constructs an instance of Db.
-   * @param {DocClient} docClient Instance of DocClient
+   * @param {OreoClient} oreoClient Instance of OreoClient
    * @param {string} dbName Valid db name
    */
-  constructor(docClient: DocClient, dbName: string);
+  constructor(oreoClient: OreoClient, dbName: string);
   /**
    * Database name pattern
    * @type {RegExp}
@@ -40,13 +40,13 @@ export declare class Db {
    */
   collection<DocumentSchema extends Document = Document>(collectionName: string): Collection;
   /**
-   * Validates argument of docClient.
-   * @param {DocClient} docClient Instance of DocClient
+   * Validates argument of oreoClient.
+   * @param {DocClient} oreoClient Instance of OreoClient
    * @returns {void}
-   * @throws {TypeError} Will throw an error if docClient is not an instance of DocClient.
+   * @throws {TypeError} Will throw an error if oreoClient is not an instance of OreoClient.
    * @private
    */
-  static validateDocClient(docClient: DocClient): void;
+  static validateOreoClient(oreoClient: OreoClient): void;
   /**
    * Validates argument of dbName.
    * @param {string} dbName Valid database name

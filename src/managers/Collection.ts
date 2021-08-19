@@ -1,5 +1,5 @@
-import fse, { readJsonSync, removeSync } from 'fs-extra';
-const { ensureDirSync, readdirSync, readFileSync, unlinkSync, writeFileSync, writeJsonSync, pathExistsSync } = fse;
+import fse from 'fs-extra';
+const { ensureDirSync, readdirSync, readFileSync, writeJsonSync, pathExistsSync, readJsonSync, removeSync } = fse;
 
 import { join } from 'path';
 import { ObjectId } from '../structures/ObjectId.js';
@@ -10,7 +10,6 @@ import {
   IndexesObject,
   IndexedDocumentsObject,
   ProjectionObject,
-  UnknownObject,
   IndexObject,
   Document,
   Query,
