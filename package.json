@@ -1,5 +1,5 @@
 {
-  "name": "docdb",
+  "name": "oreodb",
   "version": "1.0.0-beta.1",
   "description": "A database that is a subset of MongoDB and has the ability to store data (documents) in json file format, so that your stored data is easily viewable in a filesystem.",
   "main": "/dist/src/index.js",
@@ -8,6 +8,11 @@
   "exports": {
     ".": "./dist/src/index.js"
   },
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "scripts": {
     "setup": "npm i && npx tsc",
     "test": "node ./dist/tests/index.js",
@@ -27,7 +32,8 @@
   "author": "LaterIdiot",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^10.0.0"
+    "fs-extra": "^10.0.0",
+    "mongodb": "^4.1.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.12",
