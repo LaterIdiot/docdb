@@ -32,8 +32,7 @@
   "author": "LaterIdiot",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^10.0.0",
-    "mongodb": "^4.1.0"
+    "fs-extra": "^10.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.12",
