@@ -39,13 +39,13 @@ export class Collection<DocumentSchema extends Document = Document> {
     this.collectionPath = collectionPath;
 
     const documentsPath = join(collectionPath, 'documents');
-    const indexesPath = join(collectionPath, 'indexes');
+    // const indexesPath = join(collectionPath, 'indexes');
 
     // ensures documentsPath is a directory
     ensureDirSync(documentsPath);
 
     // ensures indexesPath is a directory
-    ensureDirSync(indexesPath);
+    // ensureDirSync(indexesPath);
 
     /**
      * Documents path
@@ -57,20 +57,20 @@ export class Collection<DocumentSchema extends Document = Document> {
      * Indexes path
      * @type {string}
      */
-    this.indexesPath = indexesPath;
+    // this.indexesPath = indexesPath;
 
-    const indexesJsonPath = join(indexesPath, 'indexes.json');
+    // const indexesJsonPath = join(indexesPath, 'indexes.json');
 
-    if (!pathExistsSync(indexesJsonPath)) {
-      const indexesDefault: IndexesObject = { indexes: [] };
-      writeJsonSync(indexesJsonPath, indexesDefault, { spaces: 2 });
-    }
+    // if (!pathExistsSync(indexesJsonPath)) {
+    //   const indexesDefault: IndexesObject = { indexes: [] };
+    //   writeJsonSync(indexesJsonPath, indexesDefault, { spaces: 2 });
+    // }
 
     /**
      * Indexes json file path
      * @type {string}
      */
-    this.indexesJsonPath = indexesJsonPath;
+    // this.indexesJsonPath = indexesJsonPath;
   }
 
   /**
@@ -109,13 +109,13 @@ export class Collection<DocumentSchema extends Document = Document> {
    * Indexes path
    * @type {string}
    */
-  public indexesPath: string;
+  // public indexesPath: string;
 
   /**
    * Indexes json file path
    * @type {string}
    */
-  public indexesJsonPath: string;
+  // public indexesJsonPath: string;
 
   /**
    * Inserts document to a collection.
@@ -278,27 +278,27 @@ export class Collection<DocumentSchema extends Document = Document> {
    * @returns {boolean}
    * @static
    */
-  static satisfiesIndexSpec(indexSpec: IndexSpecification, document: Document): boolean {
-    const indexSpecPropArr = Object.keys(indexSpec);
-    const documentPropArr = Object.keys(document);
+  // static satisfiesIndexSpec(indexSpec: IndexSpecification, document: Document): boolean {
+  //   const indexSpecPropArr = Object.keys(indexSpec);
+  //   const documentPropArr = Object.keys(document);
 
-    for (const indexSpecProp of indexSpecPropArr) {
-      if (!documentPropArr.includes(indexSpecProp)) return false;
+  //   for (const indexSpecProp of indexSpecPropArr) {
+  //     if (!documentPropArr.includes(indexSpecProp)) return false;
 
-      const val1 = indexSpec[indexSpecProp];
-      const val2 = document[indexSpecProp];
-      const areObjects = isObject(val1 as IndexSpecification) && isObject(val2 as JSONObject);
+  //     const val1 = indexSpec[indexSpecProp];
+  //     const val2 = document[indexSpecProp];
+  //     const areObjects = isObject(val1 as IndexSpecification) && isObject(val2 as JSONObject);
 
-      if (
-        (areObjects && !Collection.satisfiesIndexSpec(val1 as IndexSpecification, val2 as JSONObject)) ||
-        (!areObjects && isObject(val1) !== isObject(val2))
-      ) {
-        return false;
-      }
-    }
+  //     if (
+  //       (areObjects && !Collection.satisfiesIndexSpec(val1 as IndexSpecification, val2 as JSONObject)) ||
+  //       (!areObjects && isObject(val1) !== isObject(val2))
+  //     ) {
+  //       return false;
+  //     }
+  //   }
 
-    return true;
-  }
+  //   return true;
+  // }
 
   /**
    * Creates a projection of a given document depending on the defined projection object.
@@ -307,37 +307,37 @@ export class Collection<DocumentSchema extends Document = Document> {
    * @returns {Document}
    * @static
    */
-  static createProjection(document: Document, projectionObj?: ProjectionObject): Document {
-    if (projectionObj === undefined) return document;
+  // static createProjection(document: Document, projectionObj?: ProjectionObject): Document {
+  //   if (projectionObj === undefined) return document;
 
-    const documentPropArr = Object.keys(document);
-    const projectionObjPropArr = Object.keys(projectionObj);
-    const projectedDocument: JSONObject = {};
+  //   const documentPropArr = Object.keys(document);
+  //   const projectionObjPropArr = Object.keys(projectionObj);
+  //   const projectedDocument: JSONObject = {};
 
-    for (const projectionObjProp of projectionObjPropArr) {
-      const projectionObjPropVal = projectionObj[projectionObjProp];
-      const documentPropVal = document[projectionObjProp];
-      const projectionObjPropValIsObj = isObject(projectionObjPropVal);
-      const documentPropValIsObj = isObject(documentPropVal);
+  //   for (const projectionObjProp of projectionObjPropArr) {
+  //     const projectionObjPropVal = projectionObj[projectionObjProp];
+  //     const documentPropVal = document[projectionObjProp];
+  //     const projectionObjPropValIsObj = isObject(projectionObjPropVal);
+  //     const documentPropValIsObj = isObject(documentPropVal);
 
-      if (projectionObjPropValIsObj) {
-        if (documentPropValIsObj) {
-          projectedDocument[projectionObjProp] = Collection.createProjection(
-            documentPropVal as JSONObject,
-            projectionObjPropVal as ProjectionObject,
-          );
-        } else {
-          projectedDocument[projectionObjProp] = documentPropVal;
-        }
-      } else {
-        if (projectionObjPropVal === 1) {
-          projectedDocument[projectionObjProp] = documentPropVal;
-        }
-      }
-    }
+  //     if (projectionObjPropValIsObj) {
+  //       if (documentPropValIsObj) {
+  //         projectedDocument[projectionObjProp] = Collection.createProjection(
+  //           documentPropVal as JSONObject,
+  //           projectionObjPropVal as ProjectionObject,
+  //         );
+  //       } else {
+  //         projectedDocument[projectionObjProp] = documentPropVal;
+  //       }
+  //     } else {
+  //       if (projectionObjPropVal === 1) {
+  //         projectedDocument[projectionObjProp] = documentPropVal;
+  //       }
+  //     }
+  //   }
 
-    return projectedDocument;
-  }
+  //   return projectedDocument;
+  // }
 
   /**
    * Indexes a given document.
@@ -346,27 +346,27 @@ export class Collection<DocumentSchema extends Document = Document> {
    * @returns {Promise<void>}
    * @private
    */
-  private async indexOne(document: Document, indexJsonPath?: string): Promise<void> {
-    if (!indexJsonPath) {
-      const indexesObj: IndexesObject = readJsonSync(this.indexesJsonPath);
+  // private async indexOne(document: Document, indexJsonPath?: string): Promise<void> {
+  //   if (!indexJsonPath) {
+  //     const indexesObj: IndexesObject = readJsonSync(this.indexesJsonPath);
 
-      for await (const index of indexesObj.indexes) {
-        const indexJsonPath = join(this.indexesPath, index.jsonFileName);
-        this.indexOne(document, indexJsonPath);
-      }
+  //     for await (const index of indexesObj.indexes) {
+  //       const indexJsonPath = join(this.indexesPath, index.jsonFileName);
+  //       this.indexOne(document, indexJsonPath);
+  //     }
 
-      return;
-    }
+  //     return;
+  //   }
 
-    const indexedDocumentsObj: IndexedDocumentsObject = JSON.parse(readFileSync(indexJsonPath).toString());
+  //   const indexedDocumentsObj: IndexedDocumentsObject = JSON.parse(readFileSync(indexJsonPath).toString());
 
-    if (!Collection.satisfiesIndexSpec(indexedDocumentsObj.indexSpecification, document)) return;
+  //   if (!Collection.satisfiesIndexSpec(indexedDocumentsObj.indexSpecification, document)) return;
 
-    const projectedDocument = Collection.createProjection(document, indexedDocumentsObj.indexProjection);
-    indexedDocumentsObj.indexedDocuments.push({ indexedDocument: projectedDocument, _id: document._id as string });
+  //   const projectedDocument = Collection.createProjection(document, indexedDocumentsObj.indexProjection);
+  //   indexedDocumentsObj.indexedDocuments.push({ indexedDocument: projectedDocument, _id: document._id as string });
 
-    return writeJsonSync(indexJsonPath, indexedDocumentsObj, { spaces: 2 });
-  }
+  //   return writeJsonSync(indexJsonPath, indexedDocumentsObj, { spaces: 2 });
+  // }
 
   /**
    * Indexes the given documents.
@@ -375,29 +375,29 @@ export class Collection<DocumentSchema extends Document = Document> {
    * @returns {Promise<void>}
    * @private
    */
-  private async indexMany(documentArr: Document[], indexJsonPath?: string): Promise<void> {
-    if (!indexJsonPath) {
-      const indexesObj: IndexesObject = readJsonSync(this.indexesJsonPath);
+  // private async indexMany(documentArr: Document[], indexJsonPath?: string): Promise<void> {
+  //   if (!indexJsonPath) {
+  //     const indexesObj: IndexesObject = readJsonSync(this.indexesJsonPath);
 
-      for await (const index of indexesObj.indexes) {
-        const indexJsonPath = join(this.indexesPath, index.jsonFileName);
-        this.indexMany(documentArr, indexJsonPath);
-      }
+  //     for await (const index of indexesObj.indexes) {
+  //       const indexJsonPath = join(this.indexesPath, index.jsonFileName);
+  //       this.indexMany(documentArr, indexJsonPath);
+  //     }
 
-      return;
-    }
+  //     return;
+  //   }
 
-    const indexedDocumentsObj: IndexedDocumentsObject = JSON.parse(readFileSync(indexJsonPath).toString());
+  //   const indexedDocumentsObj: IndexedDocumentsObject = JSON.parse(readFileSync(indexJsonPath).toString());
 
-    for (const document of documentArr) {
-      if (!Collection.satisfiesIndexSpec(indexedDocumentsObj.indexSpecification, document)) continue;
+  //   for (const document of documentArr) {
+  //     if (!Collection.satisfiesIndexSpec(indexedDocumentsObj.indexSpecification, document)) continue;
 
-      const projectedDocument = Collection.createProjection(document, indexedDocumentsObj.indexProjection);
-      indexedDocumentsObj.indexedDocuments.push({ indexedDocument: projectedDocument, _id: document._id as string });
-    }
+  //     const projectedDocument = Collection.createProjection(document, indexedDocumentsObj.indexProjection);
+  //     indexedDocumentsObj.indexedDocuments.push({ indexedDocument: projectedDocument, _id: document._id as string });
+  //   }
 
-    return writeJsonSync(indexJsonPath, indexedDocumentsObj, { spaces: 2 });
-  }
+  //   return writeJsonSync(indexJsonPath, indexedDocumentsObj, { spaces: 2 });
+  // }
 
   /**
    * Creates a projection object from a index specification object.
@@ -405,67 +405,67 @@ export class Collection<DocumentSchema extends Document = Document> {
    * @returns {ProjectionObject}
    * @static
    */
-  static createIndexProjectionObj(indexSpec: IndexSpecification): ProjectionObject {
-    const indexSpecPropArr = Object.keys(indexSpec);
-    const projectionObj: ProjectionObject = {};
+  // static createIndexProjectionObj(indexSpec: IndexSpecification): ProjectionObject {
+  //   const indexSpecPropArr = Object.keys(indexSpec);
+  //   const projectionObj: ProjectionObject = {};
 
-    for (const indexSpecProp of indexSpecPropArr) {
-      const val = indexSpec[indexSpecProp];
+  //   for (const indexSpecProp of indexSpecPropArr) {
+  //     const val = indexSpec[indexSpecProp];
 
-      if (isObject(val)) {
-        projectionObj[indexSpecProp] = Collection.createIndexProjectionObj(val as IndexSpecification);
-      } else {
-        projectionObj[indexSpecProp] = 1;
-      }
-    }
+  //     if (isObject(val)) {
+  //       projectionObj[indexSpecProp] = Collection.createIndexProjectionObj(val as IndexSpecification);
+  //     } else {
+  //       projectionObj[indexSpecProp] = 1;
+  //     }
+  //   }
 
-    return projectionObj;
-  }
+  //   return projectionObj;
+  // }
 
   /**
    * Creates a new index using the given index specification object.
    * @param {IndexSpecification} indexSpec Index specification object that defines the index
    * @returns {Promise<void>}
    */
-  public async createIndex(indexSpec: IndexSpecification): Promise<void> {
-    if (!isObjectOnly(indexSpec)) throw new TypeError('Argument of indexSpec must be an object');
+  // public async createIndex(indexSpec: IndexSpecification): Promise<void> {
+  //   if (!isObjectOnly(indexSpec)) throw new TypeError('Argument of indexSpec must be an object');
 
-    const indexesObj: IndexesObject = readJsonSync(this.indexesJsonPath);
+  //   const indexesObj: IndexesObject = readJsonSync(this.indexesJsonPath);
 
-    for (const index of indexesObj.indexes) {
-      if (deepEqual(index, indexSpec)) return;
-    }
+  //   for (const index of indexesObj.indexes) {
+  //     if (deepEqual(index, indexSpec)) return;
+  //   }
 
-    const indexObj: IndexObject = {
-      indexSpecification: indexSpec,
-      jsonFileName: `index-${indexesObj.indexes.length}.json`,
-    };
+  //   const indexObj: IndexObject = {
+  //     indexSpecification: indexSpec,
+  //     jsonFileName: `index-${indexesObj.indexes.length}.json`,
+  //   };
 
-    indexesObj.indexes.push(indexObj);
+  //   indexesObj.indexes.push(indexObj);
 
-    writeJsonSync(this.indexesJsonPath, indexesObj, { spaces: 2 });
+  //   writeJsonSync(this.indexesJsonPath, indexesObj, { spaces: 2 });
 
-    const indexJsonPath = join(this.indexesPath, indexObj.jsonFileName);
+  //   const indexJsonPath = join(this.indexesPath, indexObj.jsonFileName);
 
-    if (!pathExistsSync(indexJsonPath)) {
-      const indexDefault: IndexedDocumentsObject = {
-        indexSpecification: indexSpec,
-        indexProjection: Collection.createIndexProjectionObj(indexSpec),
-        indexedDocuments: [],
-      };
+  //   if (!pathExistsSync(indexJsonPath)) {
+  //     const indexDefault: IndexedDocumentsObject = {
+  //       indexSpecification: indexSpec,
+  //       indexProjection: Collection.createIndexProjectionObj(indexSpec),
+  //       indexedDocuments: [],
+  //     };
 
-      writeJsonSync(indexJsonPath, indexDefault, { spaces: 2 });
+  //     writeJsonSync(indexJsonPath, indexDefault, { spaces: 2 });
 
-      const documentFileNameArr = readdirSync(this.documentsPath);
-      const documentArr: JSONObject[] = [];
+  //     const documentFileNameArr = readdirSync(this.documentsPath);
+  //     const documentArr: JSONObject[] = [];
 
-      for (const documentFileName of documentFileNameArr) {
-        documentArr.push(readJsonSync(join(this.documentsPath, documentFileName)));
-      }
+  //     for (const documentFileName of documentFileNameArr) {
+  //       documentArr.push(readJsonSync(join(this.documentsPath, documentFileName)));
+  //     }
 
-      this.indexMany(documentArr, indexJsonPath);
-    }
-  }
+  //     this.indexMany(documentArr, indexJsonPath);
+  //   }
+  // }
 
   /**
    * Validates argument of db.

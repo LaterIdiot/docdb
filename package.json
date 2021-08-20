@@ -1,6 +1,6 @@
 {
   "name": "oreodb",
-  "version": "1.0.0-beta.1",
+  "version": "0.1.0",
   "description": "A database that is a subset of MongoDB and has the ability to store data (documents) in json file format, so that your stored data is easily viewable in a filesystem.",
   "main": "/dist/src/index.js",
   "type": "module",
